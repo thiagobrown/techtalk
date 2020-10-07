@@ -1,9 +1,9 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func main() {
-    fmt.Println("TechTalk - Concorrência e Paralelismo em Go")
+	fmt.Println("TechTalk - Concorrência e Paralelismo em Go")
 }
