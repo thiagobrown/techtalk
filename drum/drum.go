@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
-	"sync"
 	"time"
 
 	"github.com/faiface/beep"
@@ -45,21 +45,6 @@ func (d Drum) Snare(rhythm string) {
 	d.playbeat("caixa", rhythm, snareSound, colorGreen)
 }
 
-func (d Drum) HihatWithWaitGroup(rhythm string, waitGroup *sync.WaitGroup) {
-	defer waitGroup.Done()
-	d.playbeat("prato", rhythm, hihatSound, colorYellow)
-}
-
-func (d Drum) KickWithWaitGroup(rhythm string, waitGroup *sync.WaitGroup) {
-	defer waitGroup.Done()
-	d.playbeat("bumbo", rhythm, kickSound, colorRed)
-}
-
-func (d Drum) SnareWithWaitGroup(rhythm string, waitGroup *sync.WaitGroup) {
-	defer waitGroup.Done()
-	d.playbeat("caixa", rhythm, snareSound, colorGreen)
-}
-
 func (d Drum) playbeat(name, beats, sound, color string) {
 	ticker := time.NewTicker(time.Duration(d.TimeDrum) * time.Millisecond)
 	defer ticker.Stop()
@@ -80,7 +65,13 @@ func (d Drum) playbeat(name, beats, sound, color string) {
 }
 
 func loadSound(name string) beep.StreamSeekCloser {
-	f, err := os.Open(`D:\workspace-go\src\techtalk\assets\audio\` + name + ".wav")
+	a, err := filepath.Abs(`./assets/audio/` + name + ".wav")
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	f, err := os.Open(a)
 
 	if err != nil {
 		log.Println(err)
